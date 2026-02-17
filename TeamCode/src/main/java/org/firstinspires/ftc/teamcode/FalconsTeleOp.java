@@ -1,16 +1,22 @@
 package org.firstinspires.ftc.teamcode;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+
 @TeleOp
 public class FalconsTeleOp extends OpMode {
     //Initialize motors, servos, sensors, imus, etc.
     DcMotorEx motorLF, motorRF, motorLB, motorRB;
+    GoBildaPinpointDriver pinpoint;
     // TODO: Uncomment the following line if you are using servos
     //Servo claw;
 
@@ -25,6 +31,13 @@ public class FalconsTeleOp extends OpMode {
         motorLB = (DcMotorEx) hardwareMap.dcMotor.get( Constants.driveConstants.leftRearMotorName );
         motorRF = (DcMotorEx) hardwareMap.dcMotor.get( Constants.driveConstants.rightFrontMotorName );
         motorRB = (DcMotorEx) hardwareMap.dcMotor.get( Constants.driveConstants.rightRearMotorName );
+
+        // Initialize GoBilda Pinpoint
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, Constants.localizerConstants.hardwareMapName);
+        pinpoint.setOffsets(Constants.localizerConstants.forwardPodY, Constants.localizerConstants.strafePodX, Constants.localizerConstants.distanceUnit);
+        pinpoint.setEncoderResolution(Constants.localizerConstants.encoderResolution);
+        pinpoint.setEncoderDirections(Constants.localizerConstants.forwardEncoderDirection, Constants.localizerConstants.strafeEncoderDirection);
+        pinpoint.resetPosAndIMU();
 
         // Use the following line as a template for defining new servos
         //claw = (Servo) hardwareMap.servo.get("claw");
@@ -94,6 +107,16 @@ public class FalconsTeleOp extends OpMode {
         motorLB.setPower(powerLB);
         motorRF.setPower(powerRF);
         motorRB.setPower(powerRB);
+
+        // Pinpoint Telemetry
+        pinpoint.update();
+        if (gamepad1.options) {
+            pinpoint.resetPosAndIMU();
+        }
+        Pose2D pose = pinpoint.getPosition();
+        telemetry.addData("X (in)", pose.getX(DistanceUnit.INCH));
+        telemetry.addData("Y (in)", pose.getY(DistanceUnit.INCH));
+        telemetry.addData("Heading (deg)", pose.getHeading(AngleUnit.DEGREES));
 
 
 
