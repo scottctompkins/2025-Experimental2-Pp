@@ -22,8 +22,8 @@ public class Constants {
     final static double robotWeightInPounds = 15; // TODO: Update with your robot's actual weight
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(robotWeightInPounds /lbPerKg)
-            .forwardZeroPowerAcceleration(-48.49840723897402)
-            .lateralZeroPowerAcceleration(-82.27317786437277);
+            .forwardZeroPowerAcceleration(-47.09194590986046)
+            .lateralZeroPowerAcceleration(-66.30459006677371);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
@@ -35,8 +35,8 @@ public class Constants {
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .xVelocity(85.70870659295029)
-            .yVelocity(68.19706762118604);
+            .xVelocity(94.20929772084155)
+            .yVelocity(73.87246487835262);
 
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
